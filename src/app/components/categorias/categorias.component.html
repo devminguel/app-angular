@@ -1,0 +1,11 @@
+<p>categorias works!</p>
+<h2>Lista de Categorias</h2>
+<ul>
+  <li *ngFor="let categoria of categorias">
+    <strong>{{ categoria.nome }}</strong>
+    <p *ngIf="categoria.descricao">{{ categoria.descricao }}</p>
+    <span [style.color]="categoria.ativa ? 'green' : 'red'">
+      {{ categoria.ativa ? 'Ativa' : 'Inativa' }}
+    </span>
+  </li>
+</ul>

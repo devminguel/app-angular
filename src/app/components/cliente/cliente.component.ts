@@ -18,8 +18,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ClienteComponent {
   clienteForm: FormGroup = new FormGroup({});
-  cliente: Cliente[] = [];
-  clienteIdEdicao:string | null = null
+  clientes: Cliente[] = [];
+  clienteIdEdicao: string | null = null
 
   constructor(
     private clienteService: ClienteService,
@@ -32,7 +32,7 @@ export class ClienteComponent {
   }
 
   list(): void {
-    this.cliente = this.clienteService.list();
+    this.clienteService.list().subscribe((resposta) =>(this.clientes = resposta));
   }
 
   //método executado ao inicializar a página
@@ -55,17 +55,17 @@ export class ClienteComponent {
     if (this.clienteForm.valid) {
       const formData = this.clienteForm.value;
 
-      if(this.clienteIdEdicao){
-        const clienteUpdate:Cliente = {
-          id:this.clienteIdEdicao,
-          nome:formData.nome,
-          telefone:formData.telefone
+      if (this.clienteIdEdicao) {
+        const clienteUpdate: Cliente = {
+          id: this.clienteIdEdicao,
+          nome: formData.nome,
+          telefone: formData.telefone
         }
 
-        this.clienteService.update(this.clienteIdEdicao,clienteUpdate)
+        this.clienteService.update(this.clienteIdEdicao, clienteUpdate)
         this.clienteIdEdicao = null
         alert('Alterado com sucesso!')
-      }else{
+      } else {
         const clienteAdd: Cliente = {
           id: this.generateRandomString(6),
           nome: formData.nome,
@@ -83,26 +83,26 @@ export class ClienteComponent {
     this.clienteForm.reset() //limpar o form após o preenchimento
   }
 
-  editar(id:string):void{
+  editar(id: string): void {
     //Buscando todos clientes e filtrando
     //pelo id enviado como parametro
     //console.log(this.clienteService.list())
-    const cliente = this.clienteService.list().find(c => c.id == id)
-    if(cliente){
-      this.clienteIdEdicao = cliente.id
-      //atribuir os valores ao formulário
-       this.clienteForm.patchValue(
-        {
-          nome: cliente.nome,
-          telefone: cliente.telefone
-        }
-       )
-    }
+  //   const cliente =this.clienteService.list().find(c => c.id == id)
+  //   if (cliente) {
+  //     this.clienteIdEdicao = cliente.id
+  //     //atribuir os valores ao formulário
+  //     this.clienteForm.patchValue(
+  //       {
+  //         nome: cliente.nome,
+  //         telefone: cliente.telefone
+  //       }
+  //     )
+  //   }
 
-    //console.log(cliente);
+  //   //console.log(cliente);
   }
 
-  remover(id:string):void{
-     this.clienteService.remove(id)
+  remover(id: string): void {
+    this.clienteService.remove(id)
   }
 }
